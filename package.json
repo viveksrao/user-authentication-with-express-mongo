@@ -1,0 +1,22 @@
+{
+  "name": "user-authentication-with-express-mongo",
+  "version": "1.0.0",
+  "description": "A custom user authentication application that controls users access to web resources using Node.js, Express and MongoDB.",
+  "scripts": {
+    "start": "node ./app"
+  },
+  "keywords": [
+    "Authentication",
+    "Authorization",
+    "Node.js",
+    "Express",
+    "MongoDB"
+  ],
+  "author": "Vivekanand Rao",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "pug": "^2.0.0-beta4"
+  }
+}
