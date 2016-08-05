@@ -11,3 +11,7 @@ Mongoose is an open source Node package for defining data models for an applicat
 - npm Basics – https://teamtreehouse.com/library/npm-basics
 - Express Basics – https://teamtreehouse.com/library/express-basics
 - Mongo Basics – https://teamtreehouse.com/library/mongo-basics
+
+#### Commands
+mongod --config /usr/local/etc/mongod.conf
+nodemon
