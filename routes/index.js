@@ -63,6 +63,20 @@ router.get('/login', function(req, res, next){
 	return res.render('login', {title: 'Sign Up'});
 });
 
+// GET /logout
+router.get('/logout', function(req, res, next){
+	if(req.session){
+		// delete session object
+		req.session.destroy(function(err){
+			if(err){
+				return next(err);
+			}else{
+				return res.redirect('/');
+			}
+		});
+	}
+});
+
 // POST /login
 router.post('/login', function(req, res, next){
 	if(req.body.email && req.body.password){
