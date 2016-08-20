@@ -13,5 +13,5 @@ Mongoose is an open source Node package for defining data models for an applicat
 - Mongo Basics – https://teamtreehouse.com/library/mongo-basics
 
 #### Commands
-mongod --config /usr/local/etc/mongod.conf
+mongod --config /usr/local/etc/mongod.conf  
 nodemon
