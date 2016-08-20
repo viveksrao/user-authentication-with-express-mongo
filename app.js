@@ -1,9 +1,19 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var passport = require('passport');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var app = express();
+
+passport.serializeUser(function(user, done){
+	done(null, user._id);
+});
+
+passport.deserializeUser(function(userId, done){
+	User.findById(userId, done);
+});
+
 
 // mongodb connection
 mongoose.connect('mongodb://localhost:27017/bookshelf');
@@ -21,6 +31,26 @@ app.use(session({
 		mongooseConnection: db
 	})
 }));
+
+
+// Session config for Passport and MongoDB
+var sessionOptions = {
+	secret: "Valar Dohaeris Valar Morghulis",
+	resave: true,
+	saveUninitialized: true,
+	store: new MongoStore({
+		mongooseConnection: db
+	})
+};
+
+app.use(session(sessionOptions));
+
+// Initialize Passport
+app.use(passport.initialize());
+
+// Restore Session
+app.use(passport.session());
+
 
 // make user ID available in templates
 app.use(function(req, res, next){
