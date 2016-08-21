@@ -2,9 +2,33 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
+var GitHubStrategy = require('passport-github').Strategy;
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var app = express();
+
+// Configure GitHub Strategy
+passport.use(new GitHubStrategy({
+    clientId: process.env.GITHUB_CLIENT_ID,
+    clientSecret: process.env.GITHUB_CLIENT_SECRET,
+    callbackURL: "http://localhost:3000/auth/github/return"
+}, function(accessToken, refreshToken, profile, done) {
+		if(profile.emails[0]){
+	    User.findOneAndUpdate({
+				email: profile.emails[0].value
+			}, {
+				name: profile.displayName || profile.username,
+				email: profile.emails[0].value,
+				photo: profile.photos[0].value
+			}, {
+				upsert: true
+			},
+			done);
+		}else{
+			var noEmailError = new Error("Your email privacy settings prevent you from signing in to BookShelf!!!");
+			done(noEmailError,null);
+		}
+}));
 
 passport.serializeUser(function(user, done){
 	done(null, user._id);
@@ -71,7 +95,9 @@ app.set('views', __dirname + '/views');
 
 // Include Routes
 var routes = require('./routes/index');
+var auth = require('./routes/auth');
 app.use('/', routes);
+app.use('/auth', auth);
 
 // Catch 404 and forward to error handler
 app.use(function(req, res, next){
